@@ -1,0 +1,29 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - name: Run the tests
+        run: python -m pytest --junitxml=junit.xml --cov=point_machine --cov-branch --cov-report=xml:coverage.xml
+      - name: The PDF matches its source
+        run: |
+          python tools/build_lastenheft_pdf.py
+          git diff --exit-code docs/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-reports
+          path: |
+            junit.xml
+            coverage.xml

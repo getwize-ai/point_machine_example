@@ -1,0 +1,66 @@
+# Lastenheft Teilsystem Weiche — the source of the DOORS export in docs/.
+#
+# A synthetic requirements specification for a railway point machine of the
+# fictional "Beispielbahn". It is written like a DOORS export of a real
+# Lastenheft (in German, as such documents are), but describes no real
+# system. tools/build_lastenheft_pdf.py renders it into
+# docs/Lastenheft_Teilsystem_Weiche.pdf.
+#
+# Rows, in document order (the PDF is paginated by the builder): id,
+# obligation, text (Anforderungstext Teil 1), optional text2
+# (Teil 2), optional figure (a drawing in the text cell: "leds" replaces the
+# text, "state_machine" is drawn below it).
+#
+# Obligations, as the document defines them in chapter 1:
+#   Muss / Soll / Option  requirement (high / medium / low)
+#   Info                  explanation, not a requirement
+#   -                     heading
+#   (empty)               not marked
+title: Lastenheft Teilsystem Weiche
+subtitle: Beispielbahn — Weichenantrieb mit Steuerung
+version: "1.1"
+change_column: "1.0>1.1"
+
+rows:
+  - [PM.1, "-", "1 Einleitung"]
+  - [PM.2, Info, "Dieses Lastenheft beschreibt das Teilsystem Weiche (Weichenantrieb\nmit Steuerung) der fiktiven Beispielbahn. Es ist ein synthetisches\nBeispiel und beschreibt kein reales System."]
+  - [PM.3, Info, "Verbindlichkeit: Muss, Soll und Option sind Anforderungen, Info\nerläutert, \"-\" kennzeichnet eine Überschrift."]
+  - [PM.5, "-", "1.1 Normen und Richtlinien"]
+  - [PM.6, Muss, "Die Software des Teilsystems muss nach EN 50716 für den\nSicherheitsintegritätslevel SIL 2 entwickelt werden."]
+  - [PM.7, Info, "Endlage: die mechanisch verriegelte Position der Weichenzungen,\nlinks oder rechts."]
+  - [PM.10, "-", "2 Funktionale Anforderungen"]
+  - [PM.11, "-", "2.1 Stellkommandos"]
+  - [PM.12, Info, "Ein Stellauftrag ist ein Kommando des Stellwerks an die Weiche,\nin eine Endlage umzustellen."]
+  - [PM.13, Muss, "Kd_Weiche_umstellen", "Kommando vom Stellwerk an die Weiche,\nin die angeforderte Endlage (links oder\nrechts) umzustellen."]
+  - [PM.14, Muss, "Liegt die Weiche bereits in der angeforderten Endlage, muss das\nTeilsystem den Stellauftrag ohne Bewegung als ausgeführt quittieren."]
+  - [PM.15, Muss, "Ist der Weichenabschnitt belegt, muss das Teilsystem den\nStellauftrag ablehnen und die Ablehnung mit dem Grund\n\"Abschnitt belegt\" melden."]
+  - [PM.16, Soll, "Das Teilsystem soll einen laufenden Stellauftrag nicht durch einen\nneuen Stellauftrag unterbrechen, sondern den neuen ablehnen."]
+  - [PM.17, "-", "Anforderung gelöscht\nKd_Weiche_Notumstellung"]
+  - [PM.18, Muss, "Das Teilsystem muss jeden Stellauftrag innerhalb von 500 ms\nquittieren, als angenommen oder abgelehnt."]
+  - [PM.20, "-", "2.2 Endlagenüberwachung"]
+  - [PM.21, Muss, "Das Teilsystem muss die Endlage aus beiden Endlagenprüfern\nbestimmen. Nur wenn beide Prüfer dieselbe Endlage melden, gilt\ndie Weiche als in Endlage."]
+  - [PM.22, Muss, "Erreicht die Weiche die angeforderte Endlage nicht innerhalb der\nmaximalen Umstellzeit, muss das Teilsystem die Umstellung abbrechen\nund eine Störung melden."]
+  - [PM.23, Muss, "Verliert die Weiche ihre Endlage ohne Stellauftrag, muss das\nTeilsystem die Störung \"Endlagenverlust\" melden."]
+  - [PM.24, "", "Endlagen: links, rechts"]
+  - [PM.25, Muss, "Zustandsautomat Weiche:\nwhen(Endlage_verloren)/{IN_ENDLAGE - STOERUNG}", "", state_machine]
+  - [PM.30, "-", "2.3 Protokollierung"]
+  - [PM.31, Muss, "Das Teilsystem muss jedes Stellkommando, jede Endlagenmeldung\nund jede Störung mit Zeitstempel protokollieren."]
+  - [PM.32, Option, "Das Teilsystem kann das Protokoll über die Diagnoseschnittstelle\nzur Verfügung stellen."]
+  - [PM.33, "-", "gelöscht Protokollformat nach dem alten Diagnosestandard"]
+  - [PM.40, "-", "2.4 Betriebsverhalten"]
+  - [PM.41, Info, "Rückstellung: das selbsttätige Umstellen der Weiche in ihre\nGrundstellung."]
+  - [PM.42, Muss, "Die Weiche muss nach jeder Zugfahrt selbsttätig in die\nGrundstellung zurückgestellt werden."]
+  - [PM.43, Muss, "Die Weiche darf nie selbsttätig umgestellt werden; jede\nUmstellung erfordert ein Kommando des Stellwerks."]
+  - [PM.50, "-", "3 RAM Anforderungen"]
+  - [PM.51, Muss, "Das Teilsystem muss eine Verfügbarkeit von mindestens 99,99 %\nerreichen."]
+  - [PM.52, Muss, "Das Teilsystem muss beim Start einen Selbsttest der\nEndlagenprüfer ausführen und bei einem Fehler im Zustand\n\"Störung\" verbleiben."]
+  - [PM.53, Soll, "Eine Störung soll innerhalb von 4 Stunden behoben werden\nkönnen."]
+  - [PM.60, "-", "4 Technische Anforderungen"]
+  - [PM.61, "-", "4.1 Elektrische Teilsystemanforderungen"]
+  - [PM.62, Muss, "Das Teilsystem muss mit 24 V DC (± 10 %) betrieben werden\nkönnen."]
+  - [PM.63, Muss, "Die Leistungsaufnahme darf während der Umstellung 40 W nicht\nüberschreiten."]
+  - [PM.70, "-", "4.2 Zeitverhalten"]
+  - [PM.71, Muss, "Die maximale Umstellzeit beträgt 6 Sekunden."]
+  - [PM.72, Muss, "Das Teilsystem muss eine Änderung der Endlage innerhalb von\n100 ms an das Stellwerk melden."]
+  - [PM.80, "-", "4.3 Anzeige"]
+  - [PM.81, Option, "", "", leds]

@@ -1,0 +1,10 @@
+[project]
+name = "point-machine-example"
+version = "1.1.0"
+description = "Example: a railway point machine controller and its Lastenheft, for requirement traceability with Spectator"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Properties (the requirement tags) are written only in the xunit1 format.
+junit_family = "xunit1"
