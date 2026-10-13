@@ -5,6 +5,7 @@ A small, realistic example for **requirement traceability from a DOORS export to
 It contains what a railway supplier typically receives and builds:
 
 - **`docs/Lastenheft_Teilsystem_Weiche.pdf`**, a requirements specification (*Lastenheft*) for the point machine (*Weiche*) of a fictional railway, exported from DOORS. As such documents are, it is in German, and it is one ruled table with columns ID, *Verbindlichkeit* (obligation) and *Anforderungstext* (requirement text). Some rows are headings, some are explanations (*Info*), two are deleted, one has no obligation, one requirement contains a state machine diagram, and one is only a figure.
+- **`docs/Schnittstellenspezifikation_S1.pdf`**, the interface specification the Lastenheft cites as `[S1]` (chapter 1.2, *Mitgeltende Dokumente*, and PM.45: "[S1] Abschnitt 3.2"). Its edition differs on purpose: the Lastenheft lists Version 2.0, the file is Version 2.1.
 - **`point_machine/`**, the control software, implemented in part.
 - **`tests/`**, pytest tests tagged with the requirement IDs of the Lastenheft (`@pytest.mark.req("PM.13")`).
 
@@ -28,6 +29,7 @@ Everything is synthetic: the Beispielbahn, the subsystem and its requirements ar
 | PM.32 | *Option*: log via the diagnostics interface | not implemented | — |
 | PM.42 | Reset to the normal position after every train | **not implemented — contradicts PM.43** | — |
 | PM.43 | Never move without a command | implemented | — |
+| PM.45 | Accept commands in the telegram format of [S1] section 3.2 | not implemented | — |
 | PM.51 | Availability ≥ 99.99 % | not a code property | — |
 | PM.52 | Self-test of the detectors on start | implemented | ✓ |
 | PM.53 | Repair within 4 hours | not a code property | — |
@@ -41,7 +43,7 @@ The gaps are deliberate: a traceability tool should find them.
 
 ## Try it with Spectator
 
-1. Create a project and upload `docs/Lastenheft_Teilsystem_Weiche.pdf` (Sources → Upload). Spectator recognises the DOORS export and imports the 22 requirements word for word, with their DOORS IDs.
+1. Create a project and upload `docs/Lastenheft_Teilsystem_Weiche.pdf` (Sources → Upload). Spectator recognises the DOORS export and imports the 23 requirements word for word, with their DOORS IDs.
 2. Connect this repository (Sources → Repository): `https://github.com/getwize-ai/point_machine_example.git`.
 3. Verify the requirements against the code (Analyze → Artifact Analysis).
 4. Run the tests and upload the report (Sources → Test evidence, or with the API):
@@ -56,14 +58,16 @@ The gaps are deliberate: a traceability tool should find them.
 
    The tests carry the Lastenheft's IDs; Spectator links them to the requirements by those IDs.
 5. Run the conflict analysis: it finds that PM.42 and PM.43 contradict each other.
+6. Open Sources → Referenced documents: `[S1]` is read from the Lastenheft's reference list. Attach `docs/Schnittstellenspezifikation_S1.pdf` to it: Spectator flags that the file is Version 2.1 while the list names 2.0, and PM.45 shows the text of section 3.2 under *Cited clauses*.
 
 ## Regenerate the PDF
 
-The Lastenheft's content lives in `spec/lastenheft.yaml`. After a change:
+The Lastenheft's content lives in `spec/lastenheft.yaml`, the interface specification's in `spec/schnittstelle_s1.yaml`. After a change:
 
 ```bash
 pip install -r requirements-dev.txt
 python tools/build_lastenheft_pdf.py
+python tools/build_reference_pdf.py
 ```
 
-The build is reproducible; CI checks that the committed PDF matches its source.
+The build is reproducible; CI checks that the committed PDFs match their sources.
