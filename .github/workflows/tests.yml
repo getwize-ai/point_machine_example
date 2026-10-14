@@ -16,9 +16,10 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - name: Run the tests
         run: python -m pytest --junitxml=junit.xml --cov=point_machine --cov-branch --cov-report=xml:coverage.xml
-      - name: The PDF matches its source
+      - name: The PDFs match their sources
         run: |
           python tools/build_lastenheft_pdf.py
+          python tools/build_reference_pdf.py
           git diff --exit-code docs/
       - uses: actions/upload-artifact@v4
         if: always()

@@ -1,0 +1,21 @@
+# [S1] Schnittstellenspezifikation Stellwerk - Weiche — the document the
+# Lastenheft cites in chapter 1.2 ("Mitgeltende Dokumente") and in PM.45
+# ("[S1] Abschnitt 3.2"). tools/build_reference_pdf.py renders it into
+# docs/Schnittstellenspezifikation_S1.pdf.
+#
+# Synthetic, like the Lastenheft. Its edition differs on purpose: the
+# Lastenheft lists Version 2.0, this file is Version 2.1 — the check an
+# assessor makes by hand, and one Spectator makes when the file is attached.
+title: Schnittstellenspezifikation Stellwerk - Weiche
+subtitle: Beispielbahn — Telegramme zwischen Stellwerk und Teilsystem Weiche
+version: "2.1"
+
+# Pages after the cover: a list of sections, each [number, title, text]
+pages:
+  - - ["1", "Einleitung", "Diese Spezifikation legt die Telegramme zwischen dem Stellwerk und dem\nTeilsystem Weiche der fiktiven Beispielbahn fest. Sie ist ein synthetisches\nBeispiel und beschreibt kein reales System."]
+    - ["2", "Begriffe", "Telegramm: eine Nachricht zwischen Stellwerk und Teilsystem, bestehend\naus Kopf, Nutzdaten und Prüfsumme."]
+    - ["2.1", "Telegrammkopf", "Der Kopf enthält die Telegrammkennung (1 Byte) und die laufende Nummer\ndes Telegramms (2 Byte)."]
+  - - ["3", "Stellkommandos", "Das Stellwerk stellt eine Weiche ausschließlich über Stellaufträge um."]
+    - ["3.1", "Allgemeines", "Jeder Stellauftrag wird vom Teilsystem mit einer Quittung beantwortet\n(Abschnitt 3.3)."]
+    - ["3.2", "Telegrammformat Stellauftrag", "Ein Stellauftrag besteht aus dem Telegrammkopf mit der Kennung 0x21,\nder Weichennummer (2 Byte), der angeforderten Endlage (1 Byte: 1 = links,\n2 = rechts) und der Prüfsumme CRC-16 über Kopf und Nutzdaten.\nEin Telegramm mit falscher Prüfsumme wird verworfen."]
+    - ["3.3", "Quittung", "Die Quittung trägt die Kennung 0x22, die laufende Nummer des\nStellauftrags und das Ergebnis (angenommen oder abgelehnt mit Grund)."]
