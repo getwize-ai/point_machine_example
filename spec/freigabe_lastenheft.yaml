@@ -1,0 +1,162 @@
+# The customer's release of the Lastenheft and its confirmation — the source
+# of docs/Prueferklaerung_Lastenheft_Weiche.pdf and
+# docs/Bestaetigung_Aufloesung_Auflagen.pdf.
+#
+# The Beispielbahn releases its own Lastenheft (Version 1.1) for the next
+# lifecycle phase with conditions: a release report ("Prüferklärung") whose
+# chapter 5 lists them in a table (Nr. | Art | Betroffen | Stichwort / Quelle
+# | Beschreibung | Frist) and whose chapter 4 lists the application
+# conditions (Nr. | Titel | Herkunft | Adressat). The change request PMNW-01
+# (spec/cr_pmnw_01.yaml) implements the conditions; a confirmation letter
+# ("Bestätigung zur Auflösung von Auflagen") then confirms that all of them
+# are resolved and cites the change request. tools/build_release_letters_pdf.py
+# renders both. Synthetic: the organisations, people, reports and dates are
+# invented.
+#
+# Page content is a list of blocks: h1 / h2 (headings), p (paragraph),
+# clause (indented paragraph), table ({widths, rows}, the first row is the
+# header; "\n" breaks a cell's line, as a hyphenated word in a narrow column),
+# caption.
+
+report:
+  running_title: Prüferklärung
+  short: Prüferklärung_LH_Weiche_V1.1
+  stand: 15.06.2026
+  version: "1.0"
+  cover:
+    box: Freigabe von Lastenheften der Beispielbahn für das Teilsystem Weiche
+    organisation: [Beispielbahn, Fachbereich Zulassung]
+    title:
+      - [Prüferklärung, 20, bold]
+      - [(Prüfbericht), 12, regular]
+      - ["Prüfgegenstand:", 11, bold]
+      - [Lastenheft Teilsystem Weiche, 13, bold]
+      - [Version 1.1, 12, regular]
+    sign_off:
+      - ["", Freigabeverantwortlicher]
+      - ["Ort, Datum", "Beispielstadt, 15.06.2026"]
+      - ["Name, Unterschrift", M. Muster]
+  pages:
+    - - h1: Versionsspiegel
+      - table:
+          widths: [60, 80, 210, 133]
+          rows:
+            - [Version, Datum, Gegenstand der Änderung, Bemerkung]
+            - ["1.0", 15.06.2026, Erstmalige Erstellung, ""]
+      - h1: Referenzen
+      - table:
+          widths: [60, 270, 70, 83]
+          rows:
+            - [Kürzel, Referenz, Version, Ausgabedatum]
+            - ["[L01]", Lastenheft Teilsystem Weiche, "1.1", 02.03.2026]
+            - ["[G01]", Gutachten GA-2026-03 der Prüfstelle Beispiel zum Lastenheft Teilsystem Weiche, "1.0", 20.05.2026]
+            - ["[S1]", Schnittstellenspezifikation Stellwerk - Weiche, "2.0", 15.01.2026]
+            - ["[N01]", EN 50716 Bahnanwendungen – Anforderungen an die Softwareentwicklung, "2023", 2023]
+    - - h1: 1 Aufgabenstellung
+      - p: >-
+          Der Fachbereich Zulassung bewertet, ob das Lastenheft [L01] zur
+          Verwendung in der nächsten Lebenszyklusphase freigegeben werden kann.
+          Grundlage ist das Gutachten [G01].
+      - h1: 2 Prüfgegenstand
+      - table:
+          widths: [60, 263, 160]
+          rows:
+            - [Ref.-Nr., Dokumentenname, Ersteller]
+            - ["[L01]", Lastenheft Teilsystem Weiche Version 1.1, Beispielbahn (Fachautor)]
+      - h1: 3 Durchführung der Prüfung
+      - table:
+          widths: [180, 80, 223]
+          rows:
+            - [Prüfschritt, Nachweis, Bemerkungen und Abweichungen]
+            - [Inhaltliche Vollständigkeit, "[G01]", "Ja, mit Auflage"]
+            - [Widerspruchsfreiheit, "[G01]", "Nein, siehe 5"]
+            - [Prüfbarkeit, "[G01]", Ja]
+      - p: >-
+          Das Gutachten bestätigt die Vollständigkeit des Lastenheftes. Es stellt
+          fest, dass die Anforderungen ID PM 42 und ID PM 43 einander
+          widersprechen; mit der Auflage PM-A-01 wird gefordert, den Widerspruch
+          aufzulösen. Mit dem Hinweis PM-H-01 wird empfohlen, die
+          Verbindlichkeit von PM.16 zu überprüfen.
+    - - h1: 4 Anwendungsbedingungen
+      - table:
+          widths: [30, 90, 283, 80]
+          rows:
+            - [Nr., Titel, Herkunft, Adressat]
+            - ["1", Grundstellung, "Lastenheft Teilsystem Weiche Kapitel 2.4: Die Grundstellung der Weiche ist betrieblich festzulegen.", Betreiber]
+      - h1: 5 Offene Punkte/Auflagen
+      - table:
+          widths: [24, 48, 70, 62, 199, 80]
+          rows:
+            - [Nr., Art, "Betrof-\nfen", Stichwort / Quelle, Beschreibung, Frist]
+            - ["1", Auflage, LH Teilsystem Weiche, "PM-A-\n01/[G01]", "Die Anforderungen ID PM 42 und ID PM 43 widersprechen sich (selbsttätige Rückstellung gegen Umstellung nur auf Kommando). Der Widerspruch ist aufzulösen.", Mit Fortschreibung LH]
+            - ["2", Auflage, LH Teilsystem Weiche, "PM-A-\n02/[G01]", "Die Meldezeit von 100 ms nach PM.72 ist mit dem Telegrammzyklus nach [S1] nicht erreichbar und zu überprüfen.", 30.09.2026]
+            - ["3", Auflage, LH Teilsystem Weiche, "PM-A-\n03/[G01]", "Das Verhalten bei widersprüchlichen Meldungen der beiden Endlagenprüfer (PM.21) ist nicht festgelegt und zu ergänzen.", "Ende nächste Le-\nbenszyklus-\nphase"]
+            - ["4", Hinweis, LH Teilsystem Weiche, "PM-H-\n01/[G01]", "Es wird empfohlen, die Verbindlichkeit von PM.16 zu überprüfen: ein unterbrochener Stellauftrag gefährdet die Endlagenüberwachung.", ""]
+      - caption: "Tabelle 1: Liste der offenen Punkte"
+    - - h1: 6 Zusammenfassende Bewertung
+      - p: >-
+          Das Lastenheft Teilsystem Weiche Version 1.1 wird zur Verwendung in
+          der nächsten Lebenszyklusphase freigegeben. Die unter 5 genannten
+          Auflagen stehen einer Verwendung des Lastenheftes in der nächsten
+          Lebenszyklusphase nicht entgegen.
+      - h1: 7 Anlagen
+      - p: Keine
+
+confirmation:
+  running_title: Bestätigung zur Auflösung von Auflagen
+  short: Bestätigung_Auflagen_LH_Weiche_V_1_0
+  stand: 12.10.2026
+  version: "1.0"
+  cover:
+    organisation: [Beispielbahn, Change- und Testmanagement]
+    title:
+      - [Bestätigung zur Auflösung von Auflagen, 17, bold]
+      - [zu, 11, regular]
+      - [Lastenheft Teilsystem Weiche, 13, bold]
+    document_number: BB-LH-2026-07
+    sign_off:
+      - [Freigabeverantwortlicher]
+      - ["Beispielbahn, Beispielstadt"]
+  pages:
+    - - h1: Versionsspiegel
+      - table:
+          widths: [50, 70, 170, 90, 103]
+          rows:
+            - [Version, Stand, Gegenstand der Änderung, Autor, Bemerkung]
+            - ["0.1", 01.10.2026, Neuerstellung, Fachautor, ""]
+            - ["1.0", 12.10.2026, Finalisierung, Fachautor, ""]
+      - h1: Referenzen
+      - table:
+          widths: [80, 232, 80, 91]
+          rows:
+            - [Kürzel, Referenz, "Version/ Baseline", Ausgabedatum]
+            - ["[GA]", Gutachten GA-2026-03 der Prüfstelle Beispiel, "1.0", 20.05.2026]
+            - ["[PB]", Prüferklärung zum Lastenheft Teilsystem Weiche, "1.0", 15.06.2026]
+            - ["[LH]", Lastenheft Teilsystem Weiche, Version 1.1, 02.03.2026]
+            - ["[CR-PMNW-01]", Umsetzung der Auflagen aus der Freigabe des Lastenheftes Version 1.1, "1.0", 01.09.2026]
+    - - h1: 1 Zweck des Dokumentes
+      - p: >-
+          Mit diesem Dokument wird die Auflösung der Auflagen aus der
+          Prüferklärung [PB] und dem Gutachten [GA] bestätigt.
+      - h1: 2 Erklärung
+      - p: >-
+          Für das Lastenheft Teilsystem Weiche Version 1.1 inkl. CR, siehe
+          Referenzen, erkläre ich hiermit, dass
+      - clause: 1) alle Auflagen im Rahmen der Auflagenverfolgung geschlossen wurden,
+      - clause: 2) alle Auflagen erfüllt und nachvollziehbar dokumentiert sind,
+      - clause: 3) keine weiteren Auflagen aus den Referenzen zu berücksichtigen sind.
+      - h1: 3 Vorgehen bei der Prüfung
+      - p: >-
+          Die Auflagen wurden in der Auflagenverfolgung des Fachautors
+          nachgehalten. Die Auflagen PM-A-01, PM-A-02 und PM-A-03 wurden mit
+          [CR-PMNW-01] erfüllt; die Änderungen werden mit der nächsten
+          Fortschreibung in das Lastenheft übernommen.
+    - - h1: 4 Ergebnis der Prüfung
+      - h2: 4.1 Zusammenfassung
+      - p: >-
+          Im Ergebnis der Prüfung wurden alle Auflagen vollständig abgearbeitet
+          und erfüllt.
+      - h2: 4.2 Offene Punkte
+      - p: Keine
+      - h1: 5 Anlagen
+      - p: Keine

@@ -1,0 +1,100 @@
+# Change Request PMNW-01 to the Lastenheft — the source of docs/CR_PMNW-01.pdf.
+#
+# The customer changes its Lastenheft between editions with change requests:
+# a form with a header block, a classification and the change itself, as a
+# table in the Lastenheft's own columns (ID | Verbindlichkeit |
+# Anforderungstext) with change markup. tools/build_change_request_pdf.py
+# renders it. Synthetic, like the Lastenheft: the Beispielbahn, the people and
+# the change are invented.
+#
+# PMNW-01 implements the conditions (Auflagen) of the customer's release of
+# Lastenheft Version 1.1 (spec/freigabe_lastenheft.yaml):
+#   PM.16  Soll -> Muss: a running throw must not be interrupted   (Hinweis PM-H-01)
+#   PM.42  deleted: it contradicts PM.43                           (Auflage PM-A-01)
+#   NEU    a new requirement in chapter 2.2: detectors that disagree (Auflage PM-A-03)
+#   PM.72  the end-position report within 200 ms instead of 100 ms (Auflage PM-A-02)
+#   a note on PM.43, which stays as it is
+#
+# Markup in the cells, as the form shows it: [-text-] removed (red, struck
+# through), {+text+} added (green; underlined in the ID column), the rest
+# kept (black). "\n" breaks a cell's line; longer text wraps by itself.
+number: PMNW-01
+title: Umsetzung der Auflagen aus der Freigabe des Lastenheftes Version 1.1
+author: E. Muster
+reference_document: PM, Lastenheft Teilsystem Weiche Version 1.1
+reference_in_document: PM.16; PM.42; PM.72
+classification:
+  Fehler: true
+  Neue Funktion: true
+  Verdeutlichung: true
+  Redaktionell: false
+version: "1.0"
+date: 01.09.2026
+
+# The change: ("bold" | "item" | "p" | "table") blocks, in order
+body:
+  - bold: Änderungsgrund
+  - p: >-
+      Die Beispielbahn hat das Lastenheft Teilsystem Weiche Version 1.1 mit
+      dem Prüfbericht vom 15.06.2026 unter Auflagen freigegeben. Dieser CR
+      setzt die Auflagen PM-A-01, PM-A-02 und PM-A-03 sowie den Hinweis
+      PM-H-01 um.
+  - p: >-
+      Die Änderungen wurden mit dem Auftragnehmer in der Sitzung vom
+      25.08.2026 abgestimmt. Sie sind mit der nächsten Fortschreibung in das
+      Lastenheft zu übernehmen.
+  - item: 1. Anpassungen der funktionalen Anforderungen
+  - p: >-
+      Die folgenden Anforderungen werden präzisiert, neu erstellt oder
+      gestrichen. Zur besseren Lesbarkeit sind Streichungen rot und
+      durchgestrichen, Ergänzungen grün dargestellt.
+  - p: "Im Detail betrifft es folgende ID's:"
+  - table:
+      - id: PM.16
+        obligation: "[-Soll-]\n{+Muss+}"
+        text: >-
+          Das Teilsystem [-soll-]{+muss+} einen laufenden Stellauftrag nicht
+          durch einen neuen Stellauftrag unterbrechen, sondern den neuen
+          ablehnen.
+      - id: "[-PM.42-]"
+        obligation: "[-Muss-]"
+        text: >-
+          [-Die Weiche muss nach jeder Zugfahrt selbsttätig in die
+          Grundstellung zurückgestellt werden.-]
+      - id: "{+NEU+}\n{+(Kap. 2.2)+}"
+        obligation: "{+Muss+}"
+        text: >-
+          {+Melden die beiden Endlagenprüfer unterschiedliche Endlagen, muss
+          das Teilsystem die Störung "Endlagenprüfer uneinig" melden.+}
+      - id: PM.72
+        obligation: Muss
+        text: >-
+          Das Teilsystem muss eine Änderung der Endlage innerhalb von
+          [-100-]{+200+} ms an das Stellwerk melden.
+      - note: >-
+          Hinweis zu PM.43: Mit dem Entfall von PM.42 ist der Widerspruch
+          zwischen den beiden Anforderungen aufgelöst. PM.43 bleibt unverändert
+          gültig.
+  - bold: Auswirkungen
+  - p: >-
+      Die Meldezeit nach PM.72 wird an den Telegrammzyklus der
+      Schnittstelle [S1] angepasst. Bestehende Pflichtenhefte sind zu PM.16,
+      PM.42 und PM.72 sowie zur neuen Anforderung fortzuschreiben.
+
+# The form's closing blocks (not part of the change)
+impact:
+  - [Auswirkungen auf Projekte, "[ ja ]"]
+  - [Anmerkung zu Auswirkungen auf Projekte, Das Pflichtenheft des Auftragnehmers ist fortzuschreiben.]
+  - [Auswirkungen auf Schnittstellen, "[ nein ]"]
+  - [Anmerkung zu Auswirkungen auf Schnittstellen, "Die Schnittstelle [S1] bleibt unverändert."]
+safety:
+  - [Sicherheitsrelevanz, "[ ja ]"]
+  - [Begründung Sicherheitsrelevanz, Die Endlagenüberwachung ist eine sicherheitsrelevante Funktion (SIL 2).]
+sign_off:
+  - [Erstellt (Fachautor), 01.09.2026]
+  - [Geprüft (Fachbereich), 03.09.2026]
+  - [Freigegeben (Freigabeverantwortlicher), 08.09.2026]
+references:
+  - [Prüfbericht, Prüferklärung zum Lastenheft Teilsystem Weiche Version 1.1 vom 15.06.2026]
+history:
+  - ["1.0", 01.09.2026, E. Muster, Ersterstellung]
