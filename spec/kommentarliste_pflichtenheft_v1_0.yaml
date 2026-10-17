@@ -1,0 +1,33 @@
+# The customer's comment list on the supplier's Pflichtenheft V 1.0 — the
+# source of docs/Kommentarliste_Pflichtenheft_V1.0.xlsx.
+#
+# The supplier answers the Lastenheft with a Pflichtenheft (one fulfilment
+# statement per requirement); the customer answers that with a comment list
+# in Excel: one row per comment, the Lastenheft's ID, the comment and the
+# customer's assessment (Bewertung). tools/build_comment_list_xlsx.py renders
+# it. Synthetic: the Beispielbahn and its comments are invented.
+#
+# The rows cover what a reader of such a list meets: an accepted, a rejected,
+# a question and a counter-proposal (the assessment column), an ID the
+# Lastenheft does not have (PM.19), a comment that names its requirement only
+# in its text and has no assessment, and a general remark about no
+# requirement.
+title: Kommentarliste zum Pflichtenheft Teilsystem Weiche V 1.0
+subtitle: "Beispielbahn, Stand: 28.09.2026"
+author: Beispielbahn
+#: Every timestamp the file carries (document properties and ZIP entries)
+timestamp: 2026-09-28T00:00:00Z
+sheet: Kommentare
+header: [Nr., ID, Kommentar, Bewertung, Antwort Lieferant]
+widths: [6, 10, 70, 18, 40]
+rows:
+  - ["1", PM.13, "Die Umsetzung des Stellkommandos ist nachvollziehbar beschrieben.", akzeptiert, ""]
+  - ["2", PM.31, "Laut Pflichtenheft werden die Endlagenmeldungen nicht protokolliert. Das Lastenheft fordert die Protokollierung jeder Endlagenmeldung.", nicht akzeptiert, ""]
+  - ["3", PM.45, "Welche Ausgabe der Schnittstellenspezifikation [S1] liegt der Umsetzung zugrunde? Das Lastenheft nennt Version 2.0.", Rückfrage, ""]
+  - ["4", PM.51, "Statt der angebotenen 99,95 % schlagen wir 99,98 % Verfügbarkeit vor, gemessen über zwölf Monate.", Gegenvorschlag, ""]
+  - ["5", PM.72, "Die Meldezeit von 200 ms ist nachvollziehbar und wird mit CR PMNW-01 in das Lastenheft übernommen.", akzeptiert, ""]
+  - ["6", PM.19, "Die Anforderung an die Weichenheizung ist im Pflichtenheft nicht beantwortet.", Rückfrage, ""]
+  - ["7", "", "Gilt die Begrenzung der Leistungsaufnahme nach PM.63 auch bei eingeschalteter Weichenheizung?", "", ""]
+  - ["8", "", "Das Pflichtenheft ist übersichtlich gegliedert und gut lesbar.", "", ""]
+#: The values the Bewertung column offers (a hidden sheet, as such lists have)
+choices: [akzeptiert, nicht akzeptiert, Rückfrage, Gegenvorschlag]

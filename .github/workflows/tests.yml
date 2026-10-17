@@ -16,11 +16,16 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - name: Run the tests
         run: python -m pytest --junitxml=junit.xml --cov=point_machine --cov-branch --cov-report=xml:coverage.xml
-      - name: The PDFs match their sources
+      - name: The documents match their sources
         run: |
           python tools/build_lastenheft_pdf.py
           python tools/build_reference_pdf.py
+          python tools/build_change_request_pdf.py
+          python tools/build_release_letters_pdf.py
+          python tools/build_comment_list_xlsx.py
+          git status --porcelain docs/
           git diff --exit-code docs/
+          test -z "$(git status --porcelain docs/)"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
