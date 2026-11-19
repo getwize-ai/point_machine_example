@@ -1,0 +1,17 @@
+# Produktinformation Teilsystem Weiche — the supplier's product information
+# for the operator, the source of docs/Produktinformation_Weiche.pdf.
+# Rendered by:
+#
+#   python tools/build_reference_pdf.py spec/produktinformation.yaml docs/Produktinformation_Weiche.pdf
+#
+# It tells the operator how long security updates come (BSI DEV.5.2, PMS.14)
+# and how to verify a delivery (DEV.5.3, PMS.22). Synthetic.
+title: Produktinformation Teilsystem Weiche
+subtitle: Beispielbahn — Lieferung, Updates und Integritätsprüfung
+label: Produktinformation
+version: "1.0"
+
+pages:
+  - - ["1", "Lieferumfang", "Installationspaket point-machine-1.1.0.tar.gz, Prüfsummendatei SHA256SUMS\nmit Signatur SHA256SUMS.asc, Softwarestückliste point-machine-1.1.0.cdx.json\n(CycloneDX) und Prüfbericht IEC 62443-4-2 SL 2."]
+    - ["2", "Zeitraum für Sicherheitsupdates", "Der Hersteller stellt Sicherheitsupdates für die Steuerungssoftware bis\nmindestens 31.12.2036 bereit, zehn Jahre nach der ersten Inbetriebnahme.\nKritische Schwachstellen (CVSS ab 9,0) behebt er innerhalb von 14 Tagen.\nÜber jedes Sicherheitsupdate informiert er den Betreiber per Security\nAdvisory (CSAF). Das Ende des Zeitraums kündigt er zwei Jahre vorher an."]
+    - ["3", "Integrität der Lieferung prüfen", "Jede Lieferung ist mit dem Herstellerschlüssel signiert (OpenPGP,\nFingerabdruck 3F2A 9C41 7B0E 55D2 8A61 C0E4 19B7 2D93 6E10 4A8F).\nVor der Installation prüft der Betreiber:\n  gpg --verify SHA256SUMS.asc SHA256SUMS\n  sha256sum -c SHA256SUMS\nSchlägt eine Prüfung fehl, wird das Paket nicht installiert und der\nHersteller informiert."]

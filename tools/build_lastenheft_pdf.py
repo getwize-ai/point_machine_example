@@ -15,6 +15,7 @@ The output is reproducible byte for byte:
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 import pymupdf
@@ -136,8 +137,8 @@ def _paginate(rows: list[tuple]) -> list[list[tuple]]:
     return pages
 
 
-def build() -> bytes:
-    spec = yaml.safe_load(SPEC.read_text(encoding="utf-8"))
+def build(spec_path: Path = SPEC) -> bytes:
+    spec = yaml.safe_load(spec_path.read_text(encoding="utf-8"))
     rows = []
     for entry in spec["rows"]:
         source_id, obligation, text, text2, figure = (list(entry) + ["", None])[:5]
@@ -157,13 +158,15 @@ def build() -> bytes:
     )
     total = len(pages) + 1
     for number, page_rows in enumerate(pages, start=2):
-        footer = f"Lastenheft Teilsystem Weiche · Version {spec['version']} · Seite {number} von {total}"
+        footer = f"{spec.get('footer', 'Lastenheft Teilsystem Weiche')} · Version {spec['version']} · Seite {number} von {total}"
         _table_page(doc, page_rows, footer, spec["change_column"])
     doc.set_metadata({"title": spec["title"], "subject": spec["subtitle"]})
     return doc.tobytes(garbage=3, deflate=True, no_new_id=True)
 
 
 if __name__ == "__main__":
-    OUT.parent.mkdir(exist_ok=True)
-    OUT.write_bytes(build())
-    print(f"wrote {OUT.relative_to(ROOT)}")
+    # Another Lastenheft part: python tools/build_lastenheft_pdf.py SPEC OUT
+    spec_path, out = (ROOT / sys.argv[1], ROOT / sys.argv[2]) if len(sys.argv) == 3 else (SPEC, OUT)
+    out.parent.mkdir(exist_ok=True)
+    out.write_bytes(build(spec_path))
+    print(f"wrote {out.relative_to(ROOT)}")

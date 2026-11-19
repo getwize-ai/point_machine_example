@@ -1,0 +1,23 @@
+# Architekturbeschreibung Teilsystem Weiche — the supplier's architecture
+# document, the source of docs/Architekturbeschreibung_Weiche.pdf. Rendered by:
+#
+#   python tools/build_reference_pdf.py spec/architektur.yaml docs/Architekturbeschreibung_Weiche.pdf
+#
+# It describes the code in point_machine/ and answers PMS.11 of the
+# IT-security Lastenheft (Security by Design); for the BSI rules DEV.2.1 and
+# DEV.2.2. Synthetic, like everything here.
+title: Architekturbeschreibung Teilsystem Weiche
+subtitle: Beispielbahn — Steuerungssoftware des Weichenantriebs
+label: Architekturbeschreibung
+version: "1.0"
+
+pages:
+  - - ["1", "Überblick", "Die Steuerungssoftware stellt die Weiche auf Kommando des Stellwerks um und\nüberwacht ihre Endlage. Sie läuft auf der Weichensteuerung WS-200 und bietet\nnur die Schnittstelle zum Stellwerk nach [S1] und die Diagnoseschnittstelle an."]
+    - ["2", "Komponenten", "PointMachine (point_machine/controller.py): Zustandsautomat, Stellaufträge,\nEndlagenüberwachung, Selbsttest.\nEventLog (point_machine/events.py): Protokoll der Kommandos und Störungen.\nHardware-Schnittstellen (point_machine/interfaces.py): Antrieb, zwei\nEndlagenprüfer, Gleisabschnitt, Uhr."]
+    - ["3", "Schnittstellen", "Stellwerk: Telegramme nach [S1], eingehend Stellaufträge, ausgehend\nQuittungen und Meldungen.\nDiagnose: nur lesend, liefert das Protokoll; Zugriff nur nach Anmeldung.\nHardware: Antrieb (start, stop), Endlagenprüfer (read), Gleisabschnitt\n(occupied)."]
+    - ["4", "Abhängigkeiten", "Laufzeit: Python 3.12 ohne weitere Bibliotheken. Entwicklung und Test:\npytest, pytest-cov, PyMuPDF, PyYAML, openpyxl (requirements-dev.txt)."]
+  - - ["5", "Datenmodell", "Position: links oder rechts.\nZustand: UNBEKANNT, IN_ENDLAGE, UMSTELLUNG, STOERUNG.\nEreignis: Zeitstempel, Art (Kommando, Endlage, Störung), Detail.\nQuittung: angenommen oder abgelehnt mit Grund."]
+    - ["6", "Security by Design", "Bedrohungsanalyse nach STRIDE vor der Implementierung (Dokument PM-SEC-01).\nWichtigste Bedrohungen: gefälschte Stellaufträge, Manipulation des Protokolls,\nMissbrauch der Diagnoseschnittstelle als Zugang zum Stellwerksnetz."]
+    - ["6.1", "Zonenmodell", "Die Weichensteuerung liegt in der Zone Stellwerk (IEC 62443, SL 2). Die\nDiagnoseschnittstelle ist ein Conduit in die Zone Instandhaltung, der nur\nDaten aus der Zone Stellwerk heraus zulässt."]
+    - ["6.2", "Minimale Rechte", "Die Steuerungssoftware läuft unter einem eigenen Benutzer ohne\nAdministratorrechte; sie darf nur Antrieb, Endlagenprüfer und Protokoll-\nverzeichnis ansprechen."]
+    - ["6.3", "Integrität der Telegramme", "Telegramme ohne gültige Prüfsumme nach [S1] Abschnitt 3.2 werden verworfen."]
