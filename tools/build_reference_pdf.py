@@ -64,7 +64,7 @@ def build(spec_path: Path = SPEC) -> bytes:
 
 if __name__ == "__main__":
     # Another sectioned document: python tools/build_reference_pdf.py SPEC OUT
-    spec_path, out = (ROOT / sys.argv[1], ROOT / sys.argv[2]) if len(sys.argv) == 3 else (SPEC, OUT)
+    spec_path, out = map(ROOT.joinpath, sys.argv[1:]) if len(sys.argv) > 1 else (SPEC, OUT)
     out.parent.mkdir(exist_ok=True)
     out.write_bytes(build(spec_path))
     print(f"wrote {out.relative_to(ROOT)}")
