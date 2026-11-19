@@ -1,0 +1,34 @@
+# Lastenheft Teilsystem Weiche, Teil IT-Sicherheit — the source of
+# docs/Lastenheft_IT_Sicherheit_Weiche.pdf, a second DOORS export next to the
+# main Lastenheft. Rendered by:
+#
+#   python tools/build_lastenheft_pdf.py spec/lastenheft_it_sicherheit.yaml docs/Lastenheft_IT_Sicherheit_Weiche.pdf
+#
+# For trying Spectator's BSI Grundschutz++ rule set: each requirement agrees
+# one thing the BSI catalogue (practice Beschaffungsmanagement, and DEV.5.1)
+# asks a specification to agree. Security by Default (BES.4.6) is left out on
+# purpose — the rule set should report it as missing. Same row format as
+# spec/lastenheft.yaml.
+title: Lastenheft Teilsystem Weiche
+subtitle: Teil IT-Sicherheit — Beispielbahn
+footer: Lastenheft Teilsystem Weiche, Teil IT-Sicherheit
+version: "1.0"
+change_column: "-"
+
+rows:
+  - [PMS.1, "-", "1 Einleitung"]
+  - [PMS.2, Info, "Dieser Teil ergänzt das Lastenheft Teilsystem Weiche um die\nAnforderungen an die IT-Sicherheit. Grundlage ist IEC 62443 mit\nSecurity Level SL 2 für die Zone Stellwerk."]
+  - [PMS.3, Muss, "Die Steuerungssoftware des Teilsystems muss ausschließlich dem\nUmstellen und Überwachen der Weiche dienen; weitere Dienste\ndürfen auf der Weichensteuerung nicht laufen."]
+  - [PMS.4, Muss, "Die Steuerungssoftware muss auf der Weichensteuerung WS-200\n(Linux, ARM64, 1 GB RAM) mit Python 3.12 lauffähig sein."]
+  - [PMS.5, Muss, "Das Teilsystem darf nur die Schnittstelle zum Stellwerk nach [S1]\nund die Diagnoseschnittstelle anbieten."]
+  - [PMS.10, "-", "2 Anforderungen an die Entwicklung"]
+  - [PMS.11, Muss, "Der Auftragnehmer muss das Teilsystem nach dem Prinzip Security\nby Design entwickeln: Bedrohungsanalyse, Zonenmodell und minimale\nRechte sind vor der Implementierung zu dokumentieren."]
+  - [PMS.12, Soll, "Der Auftragnehmer soll nachweisen, dass er nach einem\nSicherheitslebenszyklus gemäß IEC 62443-4-1 entwickelt."]
+  - [PMS.13, Muss, "Der Auftragnehmer muss mit jeder Lieferung eine Softwarestückliste\n(SBOM) im Format CycloneDX übergeben."]
+  - [PMS.14, Muss, "Der Auftragnehmer muss Sicherheitsupdates für die Steuerungs-\nsoftware für mindestens 10 Jahre nach Inbetriebnahme bereitstellen."]
+  - [PMS.20, "-", "3 Sicherheitsfunktionen"]
+  - [PMS.21, Muss, "Jeder Zugriff über die Diagnoseschnittstelle muss eine\nAuthentifizierung mit persönlichem Zugangskonto erfordern."]
+  - [PMS.22, Option, "Die Steuerungssoftware kann in signierten Installationspaketen\ngeliefert werden, deren Signatur vor der Installation geprüft wird."]
+  - [PMS.30, "-", "4 Nachweise"]
+  - [PMS.31, Muss, "Der Auftragnehmer muss mit der Lieferung einen Prüfbericht über die\nErfüllung von IEC 62443-4-2 SL 2 vorlegen."]
+  - [PMS.32, Muss, "Das Teilsystem muss die Anforderungen des BSI-Gesetzes an\nBetreiber Kritischer Infrastrukturen und des Cyber Resilience Act\nerfüllen."]

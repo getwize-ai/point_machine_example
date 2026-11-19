@@ -23,6 +23,9 @@ jobs:
           python tools/build_change_request_pdf.py
           python tools/build_release_letters_pdf.py
           python tools/build_comment_list_xlsx.py
+          python tools/build_lastenheft_pdf.py spec/lastenheft_it_sicherheit.yaml docs/Lastenheft_IT_Sicherheit_Weiche.pdf
+          python tools/build_reference_pdf.py spec/architektur.yaml docs/Architekturbeschreibung_Weiche.pdf
+          python tools/build_reference_pdf.py spec/produktinformation.yaml docs/Produktinformation_Weiche.pdf
           git status --porcelain docs/
           git diff --exit-code docs/
           test -z "$(git status --porcelain docs/)"

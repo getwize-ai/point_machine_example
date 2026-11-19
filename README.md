@@ -93,6 +93,22 @@ After step 1 of [Try it with Spectator](#try-it-with-spectator) (steps 2 and 3 t
 
 Read by rules, without a model: the change request, the conditions and the confirmation from the letters, and the comment list's matches and verdicts. A model is needed to propose statements, to classify the two comments without an assessment, for AI drafts of answers and summaries, and for the AI pass that looks for conditions the rules missed.
 
+## Check it against BSI Grundschutz++
+
+Spectator's built-in rule set *BSI Grundschutz++* (requirements of the BSI's Anwenderkatalog Grundschutz++ that can be checked against code, requirements and documents) has three more synthetic documents to work with:
+
+| File | What it is | BSI requirements it answers |
+|---|---|---|
+| `docs/Lastenheft_IT_Sicherheit_Weiche.pdf` | The customer's Lastenheft, part *IT-Sicherheit*, a second DOORS export (PMS.1 to PMS.32) | BES.2.1.1, BES.2.1.3, BES.2.1.4.1, BES.4.5, BES.4.5.1, BES.4.6.1, BES.4.6.3, BES.4.8, BES.5.3, DEV.5.1. **Security by Default (BES.4.6) is left out on purpose.** |
+| `docs/Architekturbeschreibung_Weiche.pdf` | The supplier's architecture description of `point_machine/` | DEV.2.1 (Security by Design), DEV.2.2 (architecture documented) |
+| `docs/Produktinformation_Weiche.pdf` | The supplier's product information for the operator | DEV.5.2 (update period), DEV.5.3 (how to verify a delivery) |
+
+1. Do steps 1 and 2 of [Try it with Spectator](#try-it-with-spectator), and upload `docs/Lastenheft_IT_Sicherheit_Weiche.pdf` as well.
+2. Upload the architecture description and the product information the same way, **not** as reference material: Spectator reads reference material as documents the project cites, not as its own documentation.
+3. Verification → Compliance → **Link standard** → *BSI Grundschutz++* → **Assess**.
+
+Expected: the requirements above satisfied, BES.4.6 not satisfied. In the code, the CI runs the tests on every push (DEV.4.11, TEST.3.1.6) and measures coverage (TEST.3.2); there is no SBOM build, no dependency audit and dependencies are not pinned with hashes (DEV.4.3, DEV.4.4, DEV.4.5). The rules on sign-in are not applicable: the controller has none. Organisational requirements (procedures, approvals, staging) cannot be assessed from these files.
+
 ## Regenerate the documents
 
 The Lastenheft's content lives in `spec/lastenheft.yaml`, the interface specification's in `spec/schnittstelle_s1.yaml`, the change request's in `spec/cr_pmnw_01.yaml`, the release report's and the confirmation's in `spec/freigabe_lastenheft.yaml` and the comment list's in `spec/kommentarliste_pflichtenheft_v1_0.yaml`. After a change:
@@ -104,6 +120,9 @@ python tools/build_reference_pdf.py
 python tools/build_change_request_pdf.py
 python tools/build_release_letters_pdf.py
 python tools/build_comment_list_xlsx.py
+python tools/build_lastenheft_pdf.py spec/lastenheft_it_sicherheit.yaml docs/Lastenheft_IT_Sicherheit_Weiche.pdf
+python tools/build_reference_pdf.py spec/architektur.yaml docs/Architekturbeschreibung_Weiche.pdf
+python tools/build_reference_pdf.py spec/produktinformation.yaml docs/Produktinformation_Weiche.pdf
 ```
 
-The builds are reproducible byte for byte (the comment list with fixed timestamps and uncompressed entries); CI checks that the committed documents match their sources.
+The builds are reproducible byte for byte with the pinned PyMuPDF (the comment list with fixed timestamps and uncompressed entries); CI checks that the committed documents match their sources.

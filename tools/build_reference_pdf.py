@@ -13,6 +13,7 @@ The output is reproducible byte for byte:
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 import pymupdf
@@ -26,8 +27,8 @@ WIDTH, HEIGHT = 595, 842  # A4 portrait
 LINE = 14
 
 
-def build() -> bytes:
-    spec = yaml.safe_load(SPEC.read_text(encoding="utf-8"))
+def build(spec_path: Path = SPEC) -> bytes:
+    spec = yaml.safe_load(spec_path.read_text(encoding="utf-8"))
     doc = pymupdf.open()
     cover = doc.new_page(width=WIDTH, height=HEIGHT)
     cover.insert_text((70, 260), spec["title"], fontsize=20, fontname="hebo")
@@ -53,7 +54,7 @@ def build() -> bytes:
             y += 14
         page.insert_text(
             (70, HEIGHT - 40),
-            f"[S1] Version {spec['version']} · Seite {number} von {total}",
+            f"{spec.get('label', '[S1]')} Version {spec['version']} · Seite {number} von {total}",
             fontsize=8,
             fontname="helv",
         )
@@ -62,6 +63,8 @@ def build() -> bytes:
 
 
 if __name__ == "__main__":
-    OUT.parent.mkdir(exist_ok=True)
-    OUT.write_bytes(build())
-    print(f"wrote {OUT.relative_to(ROOT)}")
+    # Another sectioned document: python tools/build_reference_pdf.py SPEC OUT
+    spec_path, out = map(ROOT.joinpath, sys.argv[1:]) if len(sys.argv) > 1 else (SPEC, OUT)
+    out.parent.mkdir(exist_ok=True)
+    out.write_bytes(build(spec_path))
+    print(f"wrote {out.relative_to(ROOT)}")
